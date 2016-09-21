@@ -3314,7 +3314,7 @@ _registerModule('DesktopZoom', {
 						framework.removeClass(template, 'pswp--zoomed-in');
 						self.mouseZoomedIn = false;
 					}
-				    framework.removeClass(template, 'pswp--zoom-allowed');
+				    framework.addClass(template, 'pswp--zoom-allowed');
 					removeDraggingClass();
 				},
 				removeDraggingClass = function() {
