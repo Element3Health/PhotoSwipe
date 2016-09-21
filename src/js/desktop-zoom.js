@@ -58,11 +58,7 @@ _registerModule('DesktopZoom', {
 						framework.removeClass(template, 'pswp--zoomed-in');
 						self.mouseZoomedIn = false;
 					}
-					if(_currZoomLevel < 1) {
-						framework.addClass(template, 'pswp--zoom-allowed');
-					} else {
-						framework.removeClass(template, 'pswp--zoom-allowed');
-					}
+				    framework.removeClass(template, 'pswp--zoom-allowed');
 					removeDraggingClass();
 				},
 				removeDraggingClass = function() {
@@ -162,7 +158,8 @@ _registerModule('DesktopZoom', {
 			
 			self.mouseZoomedIn = !zoomOut;
 
-			self.zoomTo(zoomOut ? self.currItem.initialZoomLevel : doubleTapZoomLevel, centerPoint, 333);
+            var maxSmallZoomLevel = self.currItem.w > _options.maxForceZoomSize ? self.currItem.initialZoomLevel : self.currItem.w * _options.maxForceZoomLevel > _options.maxForceZoomSize ? _options.maxForceZoomSize / self.currItem.w : _options.maxForceZoomLevel;
+			self.zoomTo(zoomOut ? maxSmallZoomLevel : doubleTapZoomLevel, centerPoint, 333);
 			framework[ (!zoomOut ? 'add' : 'remove') + 'Class'](template, 'pswp--zoomed-in');
 		}
 

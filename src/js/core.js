@@ -36,11 +36,13 @@ var _options = {
     	if(isMouseClick) {
     		return 1;
     	} else {
-    		return item.initialZoomLevel < 0.7 ? 1 : 1.33;
+    		return item.initialZoomLevel < 1 ? 1 : _options.maxForceZoomLevel;
     	}
     },
     maxSpreadZoom: 1.33,
-	modal: true,
+	modal: true,    
+    maxForceZoomSize: 800,
+    maxForceZoomLevel: 2,
 
 	// not fully implemented yet
 	scaleMode: 'fit' // TODO
