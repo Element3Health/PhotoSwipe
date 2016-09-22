@@ -154,13 +154,15 @@ _registerModule('DesktopZoom', {
 			centerPoint = centerPoint || {x:_viewportSize.x/2 + _offset.x, y:_viewportSize.y/2 + _offset.y };
 
 			var doubleTapZoomLevel = _options.getDoubleTapZoom(true, self.currItem);
+            var maxSmallZoomLevel = self.currItem.w > _options.maxForceZoomSize ? self.currItem.initialZoomLevel : self.currItem.w * _options.maxForceZoomLevel > _options.maxForceZoomSize ? _options.maxForceZoomSize / self.currItem.w : _options.maxForceZoomLevel;
 			var zoomOut = _currZoomLevel === doubleTapZoomLevel;
+            var smallImage = self.currItem.initialZoomLevel === 1;
+            var smallImageZoomOut = _currZoomLevel > 1 && smallImage;
 			
 			self.mouseZoomedIn = !zoomOut;
 
-            var maxSmallZoomLevel = self.currItem.w > _options.maxForceZoomSize ? self.currItem.initialZoomLevel : self.currItem.w * _options.maxForceZoomLevel > _options.maxForceZoomSize ? _options.maxForceZoomSize / self.currItem.w : _options.maxForceZoomLevel;
 			self.zoomTo(zoomOut ? maxSmallZoomLevel : doubleTapZoomLevel, centerPoint, 333);
-			framework[ (!zoomOut ? 'add' : 'remove') + 'Class'](template, 'pswp--zoomed-in');
+            framework[ ((!smallImage && !zoomOut) || (smallImage && !smallImageZoomOut) ? 'add' : 'remove') + 'Class'](template, 'pswp--zoomed-in');
 		}
 
 	}
