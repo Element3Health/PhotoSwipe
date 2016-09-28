@@ -40,18 +40,21 @@
   /* autoprefixer: off */
   cursor: -webkit-zoom-in;
   cursor: -moz-zoom-in;
+  cursor: url(/img/zoom-in.cur), default;
   cursor: zoom-in; }
 
 .pswp--zoomed-in .pswp__img {
   /* autoprefixer: off */
   cursor: -webkit-grab;
   cursor: -moz-grab;
+  cursor: url(/img/grab.cur), default;
   cursor: grab; }
 
 .pswp--dragging .pswp__img {
   /* autoprefixer: off */
   cursor: -webkit-grabbing;
   cursor: -moz-grabbing;
+  cursor: url(/img/grabbing.cur), default;
   cursor: grabbing; }
 
 /*
