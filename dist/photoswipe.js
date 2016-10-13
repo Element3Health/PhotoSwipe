@@ -1,4 +1,4 @@
-/*! PhotoSwipe - v4.1.1 - 2016-09-28
+/*! PhotoSwipe - v4.1.1 - 2016-10-13
 * http://photoswipe.com
 * Copyright (c) 2016 Dmitry Semenov; */
 (function (root, factory) { 
@@ -3406,21 +3406,35 @@ _registerModule('DesktopZoom', {
 			self.panTo(newPanX, newPanY);
 		},
 
-		toggleDesktopZoom: function(centerPoint) {
-			centerPoint = centerPoint || {x:_viewportSize.x/2 + _offset.x, y:_viewportSize.y/2 + _offset.y };
+		toggleDesktopZoom: function (centerPoint) {
+			centerPoint = centerPoint || {x: _viewportSize.x / 2 + _offset.x, y: _viewportSize.y / 2 + _offset.y};
 
-			var doubleTapZoomLevel = _options.getDoubleTapZoom(true, self.currItem);
-            var maxSmallZoomLevel = self.currItem.w > _options.maxForceZoomSize ? self.currItem.initialZoomLevel : self.currItem.w * _options.maxForceZoomLevel > _options.maxForceZoomSize ? _options.maxForceZoomSize / self.currItem.w : _options.maxForceZoomLevel;
-			var zoomOut = _currZoomLevel === doubleTapZoomLevel;
-            var smallImage = self.currItem.initialZoomLevel === 1;
-            var smallImageZoomOut = _currZoomLevel > 1 && smallImage;
-			
+			var maxSmallZoomLevel = self.currItem.initialZoomLevel;
+			var currentWidth = self.currItem.w * _currZoomLevel;
+			var zoomOut = true;
+			if (self.currItem.w > _options.maxForceZoomSize) {
+				if (currentWidth <= _options.maxForceZoomSize) {
+					maxSmallZoomLevel = self.currItem.w / _options.maxForceZoomSize;
+					zoomOut = false;
+				}
+			} else if (self.currItem.w >= _options.maxForceZoomSize / _options.maxForceZoomLevel && self.currItem.w <= _options.maxForceZoomSize) {
+				if (Math.floor(currentWidth) !== _options.maxForceZoomSize) {
+					maxSmallZoomLevel = _options.maxForceZoomSize / self.currItem.w;
+					zoomOut = false;
+				}
+			} else if (Math.floor(currentWidth) !== Math.floor(self.currItem.w * _options.maxForceZoomLevel)) {
+				maxSmallZoomLevel = _options.maxForceZoomLevel;
+				zoomOut = false;
+			}
+
+			var smallImage = self.currItem.initialZoomLevel === 1;
+			var smallImageZoomOut = _currZoomLevel > 1 && smallImage;
+
 			self.mouseZoomedIn = !zoomOut;
 
-			self.zoomTo(zoomOut ? maxSmallZoomLevel : doubleTapZoomLevel, centerPoint, 333);
-            framework[ ((!smallImage && !zoomOut) || (smallImage && !smallImageZoomOut) ? 'add' : 'remove') + 'Class'](template, 'pswp--zoomed-in');
+			self.zoomTo(maxSmallZoomLevel, centerPoint, 333);
+			framework[((!smallImage && !zoomOut) || (smallImage && !smallImageZoomOut) ? 'add' : 'remove') + 'Class'](template, 'pswp--zoomed-in');
 		}
-
 	}
 });
 
